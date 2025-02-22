@@ -39,16 +39,12 @@ function App() {
     };
 
     const getSelectText = (e) => {
-        console.log(e);
-
-        setSelectText(e);
-        console.log(selectText);
-
+        setSelectText(e.target.value);
         selectProduct(selectText);
     };
 
     const selectProduct = (selectText) => {
-        if (selectText === null) {
+        if (selectText === 'All') {
             setSomeProducts(products);
         }
         else {
@@ -60,7 +56,6 @@ function App() {
         if (heart === 'red') {
             setHeart('none');
         } else {
-
             setHeart('red');
         }
     };
