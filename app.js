@@ -9,8 +9,10 @@ function App() {
     const apiUrl = 'https://fakestoreapi.com/products';
     const [products, setProducts] = React.useState([]);
     const [someproducts, setSomeProducts] = React.useState([]);
-    const [category, setCategory] = React.useState([]);
+    const [category, setCategory] = React.useState(categories);
     const [searchText, setSearchText] = React.useState('');
+    const [selectText, setSelectText] = React.useState('');
+    const [heart, setHeart] = React.useState('none');
 
     const getApi = async () => {
         try {
@@ -36,18 +38,35 @@ function App() {
         }
     };
 
-    const select = () => {
-        setCategory(products.filter((product) => (product.category === `men's clothing`)));
-        products.forEach((element) => {
-            console.log(element);
+    const getSelectText = (e) => {
+        console.log(e);
 
-        });
-        console.log(category);
+        setSelectText(e);
+        console.log(selectText);
+
+        selectProduct(selectText);
+    };
+
+    const selectProduct = (selectText) => {
+        if (selectText === null) {
+            setSomeProducts(products);
+        }
+        else {
+            setSomeProducts(products.filter((product) => (product.category.includes(selectText))));
+        }
+    };
+
+    const handleHeart = (id) => {
+        if (heart === 'red') {
+            setHeart('none');
+        } else {
+
+            setHeart('red');
+        }
     };
 
     React.useEffect(() => {
         getApi();
-        select();
     }, []);
 
     return (
@@ -62,12 +81,15 @@ function App() {
                 />
                 <select
                     className="p-2 border rounded-md"
-                    value={''}
-                    onChange={() => { }}
+                    value={selectText}
+                    onChange={(e) => { getSelectText(e) }}
                 >
-                    <option value={category}>
-                        類別 1
-                    </option>
+                    {category.map((item, index) => (
+                        <option value={item} key={index}>
+                            {item}
+                        </option>
+                    ))}
+
                 </select>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -81,12 +103,12 @@ function App() {
                                 className="w-full h-48 object-cover object-center hover:scale-110 transition duration-200"
                             />
                             <button
-                                // onClick={() => { }}
+                                onClick={() => { handleHeart(product.id) }}
                                 className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    fill={"none"}
+                                    fill={heart}
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
                                     className="w-6 h-6 text-red-500"
