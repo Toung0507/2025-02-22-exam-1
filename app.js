@@ -48,7 +48,7 @@ function App() {
             setSomeProducts(products);
         }
         else {
-            setSomeProducts(products.filter((product) => (product.category.includes(selectText))));
+            setSomeProducts(products.filter((product) => (product.category === selectText)));
         }
     };
 
